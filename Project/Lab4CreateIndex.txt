@@ -1,0 +1,7 @@
+--Name = Jyoti Kurchania
+--Project
+
+---Index
+	CREATE INDEX cust_nbr_idx
+	on T_Flt_Reservation(Cust_Nbr);
+
