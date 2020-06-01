@@ -1,0 +1,114 @@
+--Name = Jyoti Kurchania
+--Lab2
+--Problem 1
+	select COMPANY, DESCRIPTION, MANU_NAME, sum(QUANTITY) as "Qty_Ordered", sum(TOTAL_PRICE) as "total_price_paid"
+	from  stores.customer join stores.orders using (CUSTOMER_NUM)
+	join Stores.Items using(ORDER_NUM)
+	join Stores.stock using(STOCK_NUM, MANU_CODE)
+	join  Stores.Manufact using (MANU_CODE)
+	group by COMPANY, DESCRIPTION, MANU_NAME
+	order by COMPANY, DESCRIPTION;
+
+--Problem 2
+	select ORDER_NUM, ORDER_DATE, COMPANY, SHIP_DATE 
+	from stores.customer join stores.orders using (CUSTOMER_NUM)
+	where SHIP_DATE BETWEEN '25-dec-1999' AND '05-jan-2000'
+	order by COMPANY,ORDER_NUM;
+
+--Problem 3
+	select count(CUSTOMER_NUM) 
+	from  stores.customer
+	where CUSTOMER_NUM NOT IN(SELECT distinct (CUSTOMER_NUM) FROM stores.orders); 
+
+--Problem 4
+	select distinct CUSTOMER_NUM, STOCK_NUM, DESCRIPTION 
+	from  stores.customer join stores.orders using (CUSTOMER_NUM)
+	join Stores.Items using(ORDER_NUM)
+	join Stores.stock using(STOCK_NUM, MANU_CODE)
+	where DESCRIPTION like 'tennis%' or DESCRIPTION like 'volleyball%'
+	order by CUSTOMER_NUM;
+	
+--Problem 5
+	CREATE TABLE Professor
+	(Prof_ID NUMBER(3) Constraint pk_Professor Primary Key,
+	 Prof_Lname VARCHAR2(15) NOT NULL,
+	 Prof_Hiredate DATE,
+	 Prof_Sal NUMBER(8,2),
+	 Prof_Dept CHAR(6));
+
+	 DESC Professor;
+
+        CREATE TABLE Student
+	(Stu_ID NUMBER(4) Constraint pk_Student Primary Key,
+	 Stu_Lname VARCHAR2(15)	NOT NULL,
+	 Stu_Major CHAR(6),
+	 Stu_CredHrs NUMBER(4),
+	 Stu_GradePts NUMBER(5),
+	 Prof_ID NUMBER(3),CONSTRAINT fk_Student_Prof_ID FOREIGN 	 KEY(Prof_ID) REFERENCES Professor);
+	
+	DESC student;
+
+--Problem 6
+	INSERT INTO Professor
+	VALUES(123,'Hilbert','20-MAY-1992', 58000.00,'MATH');
+	INSERT INTO Professor
+	VALUES(243,'Newell','15-JUL-1997', 65500.00,'CMPSCI');
+	INSERT INTO Professor
+	VALUES(389,'Lessing','04-APR-1988', 40250.00,'ENG');
+
+	INSERT INTO student
+	VALUES(2001,'Parker','CMPSCI', 52,160,243);
+	INSERT INTO student
+	VALUES(2166,'Smith','Eng', 30,75,389);
+	INSERT INTO student
+	VALUES(3200,'Garcia','Math', 62,248,123);
+	INSERT INTO student
+	VALUES(4520,'Smith','CMPSCI', 45,157,NULL);
+
+	COMMIT;
+	
+	SELECT * from  Professor;
+ 	SELECT * from  student;
+
+--Problem 7
+	Delete from Professor
+	where Prof_ID = 389; 
+	--integrity constraint (F8792808.FK_STUDENT_PROF_ID) violated - child
+	--record found
+
+	Delete from student
+	where Stu_ID  = 2166;
+
+	Delete from Professor
+	where Prof_ID = 389; 
+	
+	COMMIT;
+	/*First attempt was unsuccessful, because of referential integrity. 
+	Referential integrity makes it impossible to delete a row in one table 
+	where its primary key has mandatory matching foreign key values in another 
+	table. Ex. The Student table contain a foreign key, Prof_ID, that link the 
+	entries in the Student table to the Professor table. Stu_ID =2166 contain an
+	entry where Prof_ID =389.
+	Second attempt was successful, because child record was deleted first from 
+	student table. */
+	select * from  Professor;
+ 	select * from  student;	
+
+--Problem 8
+	UPDATE student
+	SET Prof_ID = 243 
+	WHERE stu_ID  = 4520;
+
+	UPDATE Professor
+	SET Prof_Sal = Prof_Sal + ( Prof_Sal * 10.0/100.0 );
+
+	COMMIT;
+	
+	select * from  Professor;
+ 	select * from  student;
+
+--Delete all record and table
+	DELETE from student;
+	DELETE from Professor;
+	DROP table student;
+        DROP table Professor;
