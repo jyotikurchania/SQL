@@ -1,0 +1,31 @@
+Drop view Report5;
+
+Set Pagesize 52
+Set linesize 80
+Set long 1100
+
+CREATE VIEW Report5(Cust_Nbr, Cust_Name, Flt_Nbr, Flt_Date) AS
+SELECT Cust_Nbr, Cust_Name, Flt_Nbr, Flt_Date
+FROM T_Customer join T_Flt_Reservation using (Cust_Nbr);  
+
+Select * from Report5;
+
+---Genrate the Report based in the view above
+Clear Breaks
+Clear Columns
+Clear Computes
+TTitle off
+TTitle 'TERRA FIRMA AIRLINES | CUSTOMER RESERVATION SUMMARY'
+Column Cust_Nbr heading  'Cust|Nbr' Format 9999999999999999999999999
+Column Cust_Name heading  'Cust|Name' Format A20
+Column Flt_Nbr heading 'Flt|Nbr' Format A10
+Column Flt_Date heading 'Flt|Date' Format Date	
+Break on Report	
+Compute count Label 'Number of Reservations:' of Cust_Name on Report
+/
+
+
+
+
+
+
