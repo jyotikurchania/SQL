@@ -1,0 +1,103 @@
+--Name = Jyoti Kurchania
+--Lab3
+
+--Problem 3
+	CREATE TABLE Student
+	(Student_ID NUMBER(10) Constraint pk_Student Primary Key,
+	 Student_Name VARCHAR2(15) NOT NULL,
+	 Student_Address VARCHAR2(50),
+	 Student_Major CHAR(6));
+
+	 DESC Student;
+
+        CREATE TABLE Instructor
+	(Instructor_ID NUMBER(3) Constraint pk_Instructor Primary Key,
+	 Instructor_Name VARCHAR2(15)	NOT NULL,
+	 Instructor_Office CHAR(5));
+	
+	DESC Instructor;
+
+	CREATE TABLE Course 
+	(Course_ID CHAR(7) Constraint pk_Course Primary Key,
+	 Course_Title VARCHAR2(15),
+	 Instructor_ID NUMBER(3),CONSTRAINT fk_Course_Instructor_ID FOREIGN KEY(Instructor_ID) REFERENCES Instructor);
+	
+	DESC Course;
+
+	CREATE TABLE Enrollment
+	(Student_ID NUMBER(10),CONSTRAINT fk_Student_ID FOREIGN KEY(Student_ID) REFERENCES Student,
+	 Course_ID CHAR(7),CONSTRAINT fk_Course_ID FOREIGN KEY(Course_ID) REFERENCES Course,
+	 Stu_Crse_Grade CHAR(1),CONSTRAINT ck_Student_Grade CHECK (Stu_Crse_Grade in ('A','B','C','D','F')),
+	 Constraint pk_Enrollment_ID Primary Key(Student_ID,Course_ID)	 
+	 );
+
+	DESC Enrollment;
+	Commit;
+
+--Problem 4
+	INSERT INTO Student
+	VALUES(268300458,'Williams','208 Brooks', 'CIS');
+	INSERT INTO Student
+	VALUES(543291073,'Baker','104 Philips', 'Acct');
+	INSERT INTO Student
+	VALUES(695381127,'White','208 Brooks', 'Math');
+
+	INSERT INTO Instructor
+	VALUES(301,'Codd','B104');
+	INSERT INTO Instructor
+	VALUES(451,'Parsons','B317');
+	INSERT INTO Instructor
+	VALUES(255,'Miller','H310');
+	INSERT INTO Instructor
+	VALUES(518,'Bennett','B212');
+	INSERT INTO Instructor
+	VALUES(622,'Hilbert','M301');
+
+
+	INSERT INTO Course 
+	VALUES('CIS 350','Database',301);
+	INSERT INTO Course 
+	VALUES('CIS 465','Systems Anal',451);
+	INSERT INTO Course 
+	VALUES('Acc 201','Fund of Acctg.',255);
+	INSERT INTO Course 
+	VALUES('Mkt 300','Into to Mktg',518);
+	INSERT INTO Course 
+	VALUES('Mth 202','Collage algebra',622);
+
+	INSERT INTO Enrollment
+	VALUES(268300458,'CIS 350','A');
+	INSERT INTO Enrollment
+	VALUES(268300458,'CIS 465','B');
+	INSERT INTO Enrollment
+	VALUES(543291073,'CIS 350','C');
+	INSERT INTO Enrollment
+	VALUES(543291073,'Acc 201','B');
+	INSERT INTO Enrollment
+	VALUES(543291073,'Mkt 300','A');
+	INSERT INTO Enrollment
+	VALUES(695381127,'Mth 202','B');
+	INSERT INTO Enrollment
+	VALUES(695381127,'Acc 201','A');
+
+	COMMIT;
+	
+	SELECT * from  Student;
+ 	SELECT * from  Instructor;
+	SELECT * from  Course;
+ 	SELECT * from  Enrollment;
+
+--Delete/Drop 
+	DELETE from  Enrollment;
+	DELETE from  Course;
+	DELETE from  Student;
+ 	DELETE from  Instructor;
+
+	DROP TABLE Enrollment;
+	DROP TABLE Course;
+	DROP TABLE Student;
+ 	DROP TABLE Instructor;
+
+ 	
+
+	
