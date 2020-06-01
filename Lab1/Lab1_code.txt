@@ -1,0 +1,69 @@
+--Name = Jyoti Kurchania
+--Lab1
+--Problem 1
+	select * 
+	from stores.stock;
+
+--Problem 2
+	select lname,fname, company 
+	from stores.customer 
+	order by company;
+
+--Problem 3
+	Select company 
+	from stores.customer 
+	where city in('Sunnyvale', 'Redwood City', 'San Francisco');
+
+--Problem 4 
+	select order_num, order_date, customer_num, ship_date, paid_date
+	from stores.orders
+	where order_date between '31-Dec-1999' and '03-Jan-2000';
+
+--Problem 5 
+	select order_num, order_date, ship_charge
+	from stores.orders
+	where backlog = 'n' and ship_charge >15;
+
+--Problem 6
+	select * 
+	from Stores.stock
+	where DESCRIPTION like ('%baseball%') 	
+	and MANU_CODE like ('%H%')
+   	and UNIT_PRICE >200;
+
+--Problem 7
+	Select distinct COMPANY
+	from stores.customer c, stores.orders o
+	where  c.CUSTOMER_NUM =o.CUSTOMER_NUM ;
+
+--Problem 8
+	select distinct CUSTOMER_NUM, DESCRIPTION
+	from  stores.customer join stores.orders using (CUSTOMER_NUM)
+	join Stores.Items using(ORDER_NUM)
+	join Stores.stock using(STOCK_NUM, MANU_CODE)
+	join  Stores.Manufact using (MANU_CODE)
+	where CUSTOMER_NUM >= 104 and CUSTOMER_NUM <= 108
+	order by CUSTOMER_NUM, DESCRIPTION;
+--OR
+	select distinct CUSTOMER_NUM, DESCRIPTION
+	from stores.orders join Stores.Items using(ORDER_NUM)
+	join Stores.stock using(STOCK_NUM, MANU_CODE)
+	where CUSTOMER_NUM >= 104 and CUSTOMER_NUM <= 108
+	order by CUSTOMER_NUM, DESCRIPTION;
+
+--Problem 9
+	Select count(distinct(CUSTOMER_NUM)) as Total_Customers_with_Orders
+	from stores.orders;	
+--or
+	Select count(distinct(CUSTOMER_NUM)) as Total_Customers_with_Orders
+	from stores.customer 
+	where CUSTOMER_NUM NOT IN (select customer_num from stores.orders);
+
+---Problem 10
+	Select c.CUSTOMER_NUM,count(distinct(i.ORDER_NUM)),sum(QUANTITY),sum(TOTAL_PRICE)
+	from stores.customer c,stores.orders o,Stores.Items i
+	where c.CUSTOMER_NUM = o.CUSTOMER_NUM
+	and o.ORDER_NUM =i.ORDER_NUM
+	group by  c.CUSTOMER_NUM
+	order by  c.CUSTOMER_NUM;
+	 
