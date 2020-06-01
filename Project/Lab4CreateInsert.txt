@@ -1,0 +1,160 @@
+--Name = Jyoti Kurchania
+--Project
+
+------Table1
+	CREATE TABLE T_City 
+	(City_Code CHAR(3) Constraint pk_City_Code Primary Key,
+	 City_Name VARCHAR2(15) NOT NULL,
+	 State_Code CHAR(2) NOT NULL);
+
+	 DESC T_City;
+
+------Table2
+	CREATE TABLE T_Airport 
+	(Airport_Code CHAR(3) Constraint pk_Airport_Code Primary Key,
+	 Airport_Name VARCHAR2(50) NOT NULL,
+	 City_Code CHAR(3),CONSTRAINT fk_City_Code FOREIGN KEY(City_Code)
+			REFERENCES T_City );
+
+	 DESC T_Airport;
+
+------Table3
+	CREATE TABLE T_Aircraft_Type 
+	(Type VARCHAR2(5) Constraint pk_Type Primary Key,
+	 Description VARCHAR2(35),Capacity NUMBER(3,0) NOT NULL, Range NUMBER(6,2));
+
+	 DESC T_Aircraft_Type;
+
+------Table4
+	CREATE TABLE T_Aircraft 
+	(Serial# VARCHAR2(8) Constraint pk_Serial Primary Key,
+	 Type VARCHAR2(5),CONSTRAINT fk_Type FOREIGN KEY(Type)
+			REFERENCES T_Aircraft_Type);
+
+	 DESC T_Aircraft;
+
+------Table5
+	CREATE TABLE T_Flights 
+	(Flt_Nbr CHAR(3) Constraint pk_Flt_Nbr Primary Key,
+	 D_Airport_Code CHAR(3),   
+	 CONSTRAINT fk_DAirport_Code FOREIGN KEY(D_Airport_Code) REFERENCES T_Airport(Airport_Code),    
+	 A_Airport_Code CHAR(3),
+	 CONSTRAINT fk_AAirport_Code FOREIGN KEY(A_Airport_Code) REFERENCES T_Airport(Airport_Code));
+
+	 DESC T_Flights;
+
+------Table6
+	CREATE TABLE T_Flt_Schedule
+	(Flt_Nbr CHAR(3), Flt_Date Date, TOD CHAR(6), TOA CHAR(6), 
+	 Serial# VARCHAR2(8), CONSTRAINT fk_Serial FOREIGN KEY(Serial#) REFERENCES T_Aircraft,
+	 Constraint pk_Flt_Nbr_Date Primary Key(Flt_Nbr,Flt_Date));
+
+	 DESC T_Flt_Schedule;
+
+------Table7
+	CREATE TABLE T_Customer
+	(Cust_Nbr NUMBER(4) Constraint pk_Cust_Nbr Primary Key,
+	 Cust_Name VARCHAR2(35));
+
+	 DESC T_Customer;
+
+-----Table8
+	CREATE TABLE T_FLT_Reservation
+	(Cust_Nbr NUMBER(4), Flt_Nbr CHAR(3), Flt_Date Date,
+	Constraint pk_Cust_Res Primary Key(Cust_Nbr,Flt_Nbr,Flt_Date),
+	CONSTRAINT fk_Flt_Nbr_Date FOREIGN KEY(Flt_Nbr,Flt_Date) REFERENCES T_Flt_Schedule,
+	CONSTRAINT fk_Cust_Nbr FOREIGN KEY(Cust_Nbr) REFERENCES T_Customer);
+
+	DESC T_FLT_Reservation;
+
+-----Insert Table1 
+	INSERT INTO T_City VALUES ('025', 'Austin','TX');
+	INSERT INTO T_City VALUES ('052', 'Houston','TX');
+	INSERT INTO T_City VALUES ('520', 'Chicago','IL');
+	INSERT INTO T_City VALUES ('380', 'Memphis','TN');
+	
+	SELECT * FROM T_City;
+
+-----Insert Table2
+	INSERT INTO T_Airport VALUES ('AUS', 'Austin Municpl. Airport','025');
+	INSERT INTO T_Airport VALUES ('HOU', 'Houston Internat. Airport','052');
+	INSERT INTO T_Airport VALUES ('MEM', 'Memphis Internat. Airport','380');
+	INSERT INTO T_Airport VALUES ('ORD', 'Chicago Internat. Airport','520');
+
+	SELECT * FROM T_Airport;
+
+-----Insert Table3
+	INSERT INTO T_Aircraft_Type  VALUES ('BO727', '5-Seat,  2-engine jet',110,1800);
+	INSERT INTO T_Aircraft_Type  VALUES ('BO737', '6-Seat, 2-engine jet',174,2500);
+	INSERT INTO T_Aircraft_Type  VALUES ('BO747', '10-Seat, 4-engine jet',300,3500);
+	INSERT INTO T_Aircraft_Type  VALUES ('DC9', '6-Seat, prop w/jet',168,2800);
+
+	SELECT * FROM T_Aircraft_Type;
+
+-----Insert Table4
+	INSERT INTO T_Aircraft  VALUES ('T100-001','BO727');
+	INSERT INTO T_Aircraft  VALUES ('T100-004','DC9');
+	INSERT INTO T_Aircraft  VALUES ('T100-007','BO737');
+	INSERT INTO T_Aircraft  VALUES ('T200-002','BO747');
+	INSERT INTO T_Aircraft  VALUES ('T200-004','DC9');
+	INSERT INTO T_Aircraft  VALUES ('T300-005','BO737');
+	INSERT INTO T_Aircraft  VALUES ('T300-009','BO727');	
+	INSERT INTO T_Aircraft  VALUES ('T300-010','BO727');
+
+	SELECT * FROM T_Aircraft;
+
+-----Insert Table5
+	INSERT INTO T_Flights  VALUES ('110','AUS','MEM');
+	INSERT INTO T_Flights  VALUES ('181','HOU','ORD');
+	INSERT INTO T_Flights  VALUES ('285','AUS','HOU');
+	INSERT INTO T_Flights  VALUES ('333','ORD','HOU');
+	INSERT INTO T_Flights  VALUES ('359','HOU','AUS');
+	INSERT INTO T_Flights  VALUES ('887','MEM','ORD');
+	INSERT INTO T_Flights  VALUES ('899','MEM','AUS');
+	INSERT INTO T_Flights  VALUES ('950','ORD','MEM');
+
+	SELECT * FROM T_Flights;
+
+-----Insert Table6
+	INSERT INTO T_Flt_Schedule VALUES ('110', TO_DATE('7/12/2000','MM/DD/YYYY'),'08:00', '09:35' ,'T100-001');
+	INSERT INTO T_Flt_Schedule VALUES ('181', TO_DATE('7/13/2000','MM/DD/YYYY'), '08:30', '11:30', 'T200-002');
+	INSERT INTO T_Flt_Schedule VALUES ('285', TO_DATE('7/12/2000','MM/DD/YYYY'), '08:00', '08:45', 'T100-007');
+	INSERT INTO T_Flt_Schedule VALUES ('333', TO_DATE('7/13/2000','MM/DD/YYYY'), '17:00', '20:00', 'T200-002');
+	INSERT INTO T_Flt_Schedule VALUES ('359', TO_DATE('7/13/2000','MM/DD/YYYY'), '21:30', '22:15', 'T300-005');
+	INSERT INTO T_Flt_Schedule VALUES ('887', TO_DATE('7/14/2000','MM/DD/YYYY'), '10:45', '12:15', 'T200-004');
+	INSERT INTO T_Flt_Schedule VALUES ('899', TO_DATE('7/14/2000','MM/DD/YYYY'), '14:00', '15:45', 'T300-009');
+	INSERT INTO T_Flt_Schedule VALUES ('950', TO_DATE('7/13/2000','MM/DD/YYYY'), '13:00', '15:00', 'T100-007');
+
+	SELECT * FROM T_Flt_Schedule;
+
+-----Insert Table7
+	INSERT INTO T_Customer VALUES (1001,'Ford');
+	INSERT INTO T_Customer VALUES (1004,'Pfeiffer');
+	INSERT INTO T_Customer VALUES (1055,'Harris');
+	INSERT INTO T_Customer VALUES (1058,'Codd');
+	INSERT INTO T_Customer VALUES (1077,'Nelson');
+	INSERT INTO T_Customer VALUES (1080,'Cassatt');
+	INSERT INTO T_Customer VALUES (1100,'Streep');
+	INSERT INTO T_Customer VALUES (1155,'Lechowick');
+	INSERT INTO T_Customer VALUES (1158,'Hilbert');
+
+	SELECT * FROM T_Customer;
+
+-----Insert Table8
+	INSERT INTO T_FLT_Reservation VALUES (1004, '110',TO_DATE('7/12/2000','MM/DD/YYYY'));
+	INSERT INTO T_FLT_Reservation VALUES (1077, '110',TO_DATE('7/12/2000','MM/DD/YYYY'));
+	INSERT INTO T_FLT_Reservation VALUES (1158, '110',TO_DATE('7/12/2000','MM/DD/YYYY'));
+	INSERT INTO T_FLT_Reservation VALUES (1001, '181',TO_DATE('7/13/2000','MM/DD/YYYY'));
+	INSERT INTO T_FLT_Reservation VALUES (1080, '333',TO_DATE('7/13/2000','MM/DD/YYYY'));
+	INSERT INTO T_FLT_Reservation VALUES (1055, '359',TO_DATE('7/13/2000','MM/DD/YYYY'));
+	INSERT INTO T_FLT_Reservation VALUES (1100, '359',TO_DATE('7/13/2000','MM/DD/YYYY'));
+	INSERT INTO T_FLT_Reservation VALUES (1155, '359',TO_DATE('7/13/2000','MM/DD/YYYY'));
+	INSERT INTO T_FLT_Reservation VALUES (1004, '899',TO_DATE('7/14/2000','MM/DD/YYYY'));
+	INSERT INTO T_FLT_Reservation VALUES (1058, '899',TO_DATE('7/14/2000','MM/DD/YYYY'));
+	INSERT INTO T_FLT_Reservation VALUES (1158, '899',TO_DATE('7/14/2000','MM/DD/YYYY'));
+	INSERT INTO T_FLT_Reservation VALUES (1058, '950',TO_DATE('7/13/2000','MM/DD/YYYY'));
+
+	SELECT * FROM T_FLT_Reservation;
+
+Commit;
+
