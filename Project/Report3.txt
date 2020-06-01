@@ -1,0 +1,28 @@
+Drop view Report3;
+
+Set Pagesize 52
+Set linesize 80
+Set long 1100
+
+CREATE VIEW Report3(Airport_Code, Airport_Name, City_Name, State_Code) AS
+SELECT Airport_Code, Airport_Name, City_Name, State_Code
+FROM T_Airport join T_City using (City_Code);
+ 
+Select * from Report3;
+
+---Genrate the Report based in the view above
+Clear Breaks
+Clear Columns
+Clear Computes
+TTitle off
+TTitle 'TERRA FIRMA AIRLINES | AIRPORT SUMMARY'
+Column Airport_Code heading  'Airport|Code' Format A8
+Column Airport_Name heading  'Airport|Name' Format A30
+Column City_Name heading 'City|Name' Format A10
+Column State_Code heading 'State|Code' Format A6	 
+Break on Report	
+/
+
+
+
+
