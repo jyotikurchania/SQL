@@ -1,0 +1,32 @@
+1. List all columns and rows in the stock table.
+
+2. List the last name, first name, and company of all customers (List the columns in that
+    order). Place the list in alphabetical order by company name. 
+
+3. List the company names for all customers from Sunnyvale, Redwood City, or San
+    Francisco.
+
+4. List all orders that were placed between the dates 12/31/1999 and 01/03/2000. List 
+    order number, order date, customer number, ship date, and paid date. (Hint: Specify
+    year in single quotes ‘DD-MMM-YYYY’)
+
+5. List the order number, order date, and shipping charges for all orders that are not on
+    backlog and for which the shipping charge is over $15.00.
+
+6. List all stock items which are baseball items which have a unit price greater than 
+    $200.00 and a manufacturer code which starts with ‘H’. (Hint: use LIKE)
+
+7. List the company name for all customers who have orders. Do not list a company
+    more than once.
+
+8. List the customer number and the description (from the stock table) of all items
+    ordered by customers with customer numbers 104 – 108.  Order the output by
+    customer number and description.  (There should be no duplicate rows in your output).   
+
+9. List the number of (distinct) customers having an order. Label the column 
+    “Total_Customers_with_Orders”.
+
+10. For each customer having an order, list the customer number, the number of orders
+   that customer has, the total quantity of items on those orders, and the total price for
+   the items. Order the output by customer number.  (Hint: You must use a GROUP BY   
+   clause in this query).
