@@ -1,0 +1,42 @@
+1.	Using the table description and business rules on the following page, answer or
+perform the following:
+a.	Identify the Primary Key of the table as it is currently shown.
+b.	Identify all of the functional dependencies. Draw the dependency diagram for the initial table showing all dependencies.
+
+2.	Normalize the relation to 3rd Normal Form (3NF).
+a.	List of Normalized tables.
+b.	Provide a Relational Schema
+•	List the normalized tables using the standard table notation:
+i.	Tablename (Col1, Col2……Coln)
+Primary Key:
+Foreign Key:
+c.	Provide an E-R Diagram of the tables to be created
+d.	Provide an Attribute Chart/Data Dictionary
+
+3. Using the CREATE TABLE command, create each of the normalized tables. Run a 
+    DESCRIBE	command for each table.
+•	Include the PRIMARY KEY constraint for each table.
+•	Include the FOREIGN KEY constraint for each table to which it applies.
+•	Include the NOT NULL constraint for Student Name and Instructor Name.
+•	Include the CHECK constraint for the Grade to ensure it is one of the 5 acceptable values (A, B, C, D, or F).
+
+4. Code INSERT commands to insert the data from the attached page into the tables you 
+    created in 2.
+•	Run ‘SELECT * FROM tablename;’ commands to check the contents of your tables.
+
+5. Your output to hand in should include:
+•	Question 1, part a.: Primary Key columns
+•	Question 1, part b.: Dependency Diagram
+•	Question 2, Part a.: List of normalized table descriptions
+•	Question 2, Part b.: Dependency diagrams for the normalized tables
+•	Question 2, Part c.: E-R Diagram of the tables to be created (Chin or Crow’s Foot)
+•	Question 2, Part d.: Relational Schema/Relational Diagram (Page 85 in text)
+•	Question 2, Part e.: Attribute Chart/Data Dictionary (Page 221 in text)
+•	Question 3: Print out of the CREATE TABLE commands & show resulting SQL 
+                                            message.
+•	Question 3: Print out of the DESCRIBE table commands & resulting SQL 
+                          message.
+•	Question 4: Print out of the INSERT commands & Resulting SQL
+                          message.
+•	Question 4: Print out of the SELECT * FROM tablename listing and SQL
+                          results.
