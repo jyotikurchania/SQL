@@ -1,0 +1,74 @@
+--Name = Jyoti Kurchania
+--Project
+
+---- Views:
+----View1
+	CREATE VIEW View1(Flt_Date, Flt_Nbr, Available ) AS
+	SELECT Flt_Date,Flt_Nbr,(Capacity-count(Cust_nbr)) AS Available
+	FROM T_Aircraft_Type join T_Aircraft using (type)
+	join T_Flt_Schedule using(Serial#)
+	LEFT join T_Flt_Reservation using(Flt_Nbr,Flt_Date)
+	GROUP BY Flt_Date,Flt_Nbr,Capacity;
+
+	Select * FROM View1;
+----View2
+	CREATE VIEW View2 AS
+	SELECT City_Name as DCityName, Airport_name AS DAirportName,D_Airport_Code,Flt_Nbr, 				Flt_Date, Cust_Nbr
+	FROM T_City JOIN T_Airport USING (City_Code)
+	JOIN T_Flights ON (Airport_Code=D_Airport_Code)
+	JOIN T_Flt_Schedule USING(Flt_Nbr)
+	JOIN T_Flt_Reservation USING(Flt_Nbr, Flt_Date);
+
+	Select * FROM View2;
+
+----QUERIES
+----QUERY1
+	SELECT Serial#,Type, Description,Capacity,(Capacity-150) AS "OVER150", Range
+	FROM T_Aircraft_Type Join T_Aircraft USING(Type)
+	WHERE Range > 2400 AND Capacity >=150;
+
+----QUERY2
+	SELECT Flt_Nbr,Serial#,Type
+	FROM T_Aircraft_Type Join T_Aircraft USING(Type)
+	JOIN T_Flt_Schedule USING (Serial#)
+	WHERE Flt_Nbr in ('181','285','887','950') AND Flt_date = TO_DATE('07/12/2000', 'MM/DD/YYYY') 
+	ORDER BY Flt_Nbr, Serial#;
+
+----QUERY3
+	SELECT Flt_Date,Flt_Nbr,Available 
+	FROM View1 
+	WHERE Flt_Date = TO_DATE(&Date,'MM/DD/YYYY');
+
+----QUERY4 
+	SELECT Flt_Date,Serial#,Type,Capacity, Range
+	FROM T_Aircraft_Type JOIN T_Aircraft USING(Type)	
+	LEFT JOIN T_Flt_Schedule USING(Serial#)
+	WHERE Serial# NOT IN (SELECT Serial# 
+	FROM T_Flt_Schedule
+	WHERE Flt_Date = TO_DATE(&Date, 'MM/DD/YYYY'));
+
+-----Query5
+	SELECT Flt_Nbr, Flt_Date,DAirportName, DCityName, View2.D_Airport_Code, TOD, Airport_name 	AS AAirportName,City_Name AS ACityName,A_Airport_Code, TOA, Cust_Nbr
+	FROM T_City JOIN T_Airport USING(City_Code)
+	JOIN T_Flights ON (Airport_Code=A_Airport_Code)
+	JOIN T_Flt_Schedule USING(Flt_Nbr)
+	JOIN T_Flt_Reservation USING(Flt_Nbr, Flt_Date) 
+	JOIN View2 USING(Cust_Nbr, Flt_Nbr, Flt_Date);
+
+-----Modifications
+-----Modification1 
+	INSERT INTO T_City VALUES ('180', 'Kansas','MO');
+	INSERT INTO T_Airport VALUES ('KCI', 'Kansas City Internat. Airport','180');
+	INSERT INTO T_Flights  VALUES ('200','MEM','KCI');
+	INSERT INTO T_Flights  VALUES ('421','KCI','MEM');
+	INSERT INTO T_Flt_Schedule VALUES ('421', TO_DATE('08/15/2015','MM/DD/YYYY'),'17:30', '19:15' ,'T300-010');
+
+-----Modification2	
+	DELETE FROM T_Flt_Reservation WHERE Cust_Nbr = &CustNbr;
+	DELETE FROM T_Customer WHERE Cust_Nbr = &CustNbr;
+	/* 1.Customer can only be deleted when customer record is avaiable and there is no child record in flight reservation table.
+	2. Customer with the child record in flight reseavation table, can only be deleted when child record deleted first.*/
+
+----Drop/Delete
+	DROP VIEW View1;
+	DROP VIEW View2;
