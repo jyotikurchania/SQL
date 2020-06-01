@@ -1,0 +1,27 @@
+Drop view Report1;
+
+Set Pagesize 52
+Set linesize 80
+Set long 1100
+
+CREATE VIEW Report1 (Serial#, Type, Description, Capacity, Range) AS
+SELECT DISTINCT(Serial#), Type, Description, Capacity, Range
+FROM T_Aircraft_Type join T_Aircraft using (type);
+ 
+Select * from Report1;
+
+---Genrate the Report based in the view above
+Clear Breaks
+Clear Columns
+Clear Computes
+TTitle off
+TTitle 'TERRA FIRMA AIRLINES | AIRCRAFT REPORT'
+Column Serial#  heading  'Serial#' Format A20
+Column Type heading  'Type' Format A6
+Column Description heading 'Description' Format A25
+Column Capacity heading 'Capacity' Format 9999
+Column Range heading 'Range' Format 9999
+Break on Report	
+Compute count Label 'Number of Aircraft:' avg Label 'Average Capacity:' sum Label 'Total Capacity:' of Capacity on Report
+/
+
