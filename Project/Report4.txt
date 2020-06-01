@@ -1,0 +1,33 @@
+Drop view Report4;
+
+Set Pagesize 52
+Set linesize 80
+Set long 1100
+
+CREATE VIEW Report4 (Flt_Date,Flt_Nbr,Serial#,Reserved,Avail) AS
+SELECT Flt_Date,Flt_Nbr,Serial#, count(Cust_nbr) as "Reserved",
+(Capacity-count(Cust_nbr)) AS "Avail"
+FROM T_Aircraft_Type join T_Aircraft using (type)
+join T_Flt_Schedule using(Serial#)
+LEFT join T_Flt_Reservation using(Flt_Nbr,Flt_Date)
+GROUP BY Flt_Date,Flt_Nbr,Serial#,Capacity
+ORDER BY Flt_Date;
+ 
+Select * from Report4;
+
+---Genrate the Report based in the view above
+Clear Breaks
+Clear Columns
+Clear Computes
+TTitle off
+TTitle 'TERRA FIRMA AIRLINES | SCHEDULED FLIGHT SUMMARY'
+Column Flt_Date heading  'Flt|Date' Format A15
+Column Flt_Nbr heading 'Flt|Nbr' Format A10
+Column Serial#  heading  'Aircraft|Serial#' Format A20
+Column Reserved heading 'Seat|Reserved' Format 9999
+Column Avail heading 'Seats|Available' Format 9999
+Break on Flt_Date Skip 1
+Compute Count Label 'Total Flights:' of Flt_Nbr on Flt_Date
+Compute Sum Label 'Seat Reserved:' of Reserved on Flt_Date
+/
+
