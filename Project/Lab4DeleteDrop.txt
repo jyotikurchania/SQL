@@ -1,0 +1,24 @@
+--Name = Jyoti Kurchania
+--Project
+
+----Drop View
+	DROP VIEW Report1;
+	DROP VIEW Report3;
+	DROP VIEW Report4;
+	DROP VIEW Report5;
+	DROP VIEW Report6;
+
+	DROP VIEW View1;
+	DROP VIEW View2;
+--- Drop Index
+	DROP INDEX cust_nbr_idx;
+
+----Delect/Drop Table
+	DROP table T_FLT_Reservation;
+	DROP table T_Flt_Schedule;
+	DROP table T_Flights;
+	DROP table T_CUSTOMER;
+	DROP table T_Airport;
+	DROP table T_City;
+	DROP table T_Aircraft;
+	DROP table T_Aircraft_Type;
